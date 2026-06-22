@@ -10,13 +10,14 @@ async function seed() {
   console.log("Seeding 200,000 products...");
 
   await sql`
-    INSERT INTO products (name, category, price)
-    SELECT
-      'Product ' || i,
-      (ARRAY['Electronics','Clothing','Books','Food','Sports'])[floor(random()*5+1)],
-      round((random()*1000)::numeric, 2)
-    FROM generate_series(1, 200000) AS i
-  `;
+  INSERT INTO products (name, category, price, created_at)
+  SELECT
+    'Product ' || i,
+    (ARRAY['Electronics','Clothing','Books','Food','Sports'])[floor(random()*5+1)],
+    round((random()*1000)::numeric, 2),
+    NOW() - (random() * interval '365 days')
+  FROM generate_series(1, 200000) AS i
+`;
 
   console.log("Done!");
   process.exit(0);
